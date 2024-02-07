@@ -1,7 +1,8 @@
 import json
 import os
 import boto3
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, NoCredentialsError
+
 
 def upload_configuration(config_file: str = 'settings.json') -> dict:
     """
@@ -42,6 +43,49 @@ class SecretsManager:
         except ClientError as e:
             print(f"An error occurred: {e}")
             raise e
+
+
+def send_email_smtp(recipient:str, subject:str, message:str, charset='UTF-8', sender="coart@coart.space"):
+    """
+    Func send email by SMTP AWS
+    Args:
+        recipient: email recipient str
+        subject: email subject str
+        body_text: body str
+        body_html: body str
+        charset: UTF-8
+        sender: email sender str
+
+    """
+    # Create a new SES client
+    client = boto3.client('ses', region_name=aws_secrets.get_secret('AWS_REGION_NAME'),
+                          aws_access_key_id=aws_secrets.get_secret('AWS_ACCESS_KEY'),
+                          aws_secret_access_key=aws_secrets.get_secret('AWS_SECRET_KEY'))
+
+    try:
+        # Provide the contents of the email.
+        response = client.send_email(
+            Destination={'ToAddresses': [recipient]},
+            Message={
+                'Body': {
+                    'Html': {'Charset': charset, 'Data': message},
+                    'Text': {'Charset': charset, 'Data': message},
+                },
+                'Subject': {'Charset': charset, 'Data': subject},
+            },
+            Source=sender,
+        )
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+
+        return response.get('ResponseMetadata').get('HTTPStatusCode')
+
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    except NoCredentialsError:
+        print("Credentials not available")
+
+
 
 # load configuration
 configuration = upload_configuration()
