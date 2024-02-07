@@ -10,10 +10,11 @@ db = SQLAlchemy()
 class User(db.Model):
     """User model representing a user """
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(16), unique=True, nullable=False, default=lambda: str(uuid.uuid4())) # generate unique id
-    username = db.Column(db.String(300), nullable=False)
-    email = db.Column(db.String(300), nullable=False)
-    password = db.Column(db.String(300), nullable=False)
+    # generate unique_id
+    user_id = db.Column(db.String(36), unique=True, nullable=False, default=lambda: str(uuid.uuid4()))
+    username = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     email_confirmed = db.Column(db.Boolean, default=False)
 
