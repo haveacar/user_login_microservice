@@ -1,6 +1,6 @@
 from flask import request, current_app
 from flask_restful import Resource
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from sqlalchemy.exc import IntegrityError
 from marshmallow import ValidationError
 
@@ -93,3 +93,34 @@ class ResendConfirmationResource(Resource):
             return {'message': 'Email confirmation sent'}, 200
         else:
             return {'message': 'Failed to send email confirmation'}, 500
+
+
+class ConfirmEmail(Resource):
+    """Handle email confirmation"""
+
+    def get(self, token: str):
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+
+        try:
+
+            email = s.loads(token, salt='confirm_email', max_age=600)
+
+        except SignatureExpired:
+            return {'message': 'The confirmation link has expired. Please request a new one.'}, 400
+
+        except BadTimeSignature:
+            return {'message': 'The confirmation link is invalid.'}, 400
+
+        user = Users.query.filter_by(email=email).first()
+
+        if not user:
+            return {'message': 'Invalid request.'}, 400
+
+        if user.email_confirmed:
+            return {'message': 'Email already confirmed'}, 400
+
+        # confirm user
+        user.email_confirmed = True
+        db.session.commit()
+
+        return {'message': 'Email confirmed'}, 200
