@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class Users(db.Model):
     """User model representing a user """
     id = db.Column(db.Integer, primary_key=True)
     # generate unique_id
