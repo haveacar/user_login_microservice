@@ -16,6 +16,7 @@ def upload_configuration(config_file: str = 'settings.json') -> dict:
 
     return data
 
+
 class SecretsManager:
     """
     A class for interacting with AWS Secrets Manager.
@@ -45,7 +46,8 @@ class SecretsManager:
             raise e
 
 
-def send_email_smtp(recipient:str, subject:str, message:str, charset='UTF-8', sender="coart@coart.space"):
+def send_email_smtp(recipient: str, subject: str, message: str, charset='UTF-8', sender: str = "web3m_test@coart.space",
+                    region: str = 'us-east-1'):
     """
     Func send email by SMTP AWS
     Args:
@@ -55,12 +57,15 @@ def send_email_smtp(recipient:str, subject:str, message:str, charset='UTF-8', se
         body_html: body str
         charset: UTF-8
         sender: email sender str
+        region: str region
 
     """
     # Create a new SES client
-    client = boto3.client('ses', region_name=aws_secrets.get_secret('AWS_REGION_NAME'),
-                          aws_access_key_id=aws_secrets.get_secret('AWS_ACCESS_KEY'),
-                          aws_secret_access_key=aws_secrets.get_secret('AWS_SECRET_KEY'))
+    client = boto3.client('ses',
+                          region_name=region,
+                          aws_access_key_id=configuration.get('mail_access'),
+                          aws_secret_access_key=configuration.get('mail_secret')
+                          )
 
     try:
         # Provide the contents of the email.
@@ -86,10 +91,10 @@ def send_email_smtp(recipient:str, subject:str, message:str, charset='UTF-8', se
         print("Credentials not available")
 
 
-
 # load configuration
 configuration = upload_configuration()
 
 # initialize secret manager
-aws_secrets = SecretsManager(configuration.get('aws_access_key'), configuration.get('aws_secret_key'), configuration.get('aws_region_name'))
+aws_secrets = SecretsManager(configuration.get('aws_access_key'), configuration.get('aws_secret_key'),
+                             configuration.get('aws_region_name'))
 secret_manager_keys = aws_secrets.get_secret('web3m-test-secrets')

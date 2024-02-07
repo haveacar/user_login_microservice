@@ -4,6 +4,7 @@ from itsdangerous import URLSafeTimedSerializer
 from sqlalchemy.exc import IntegrityError
 from marshmallow import ValidationError
 
+from controls import send_email_smtp
 from serializers import UserRegistrationSchema
 from models import Users, db
 from constants import HTML_CONFIRM, SUBJECT
@@ -52,9 +53,10 @@ class RegisterResource(Resource):
             confirm_url = f"{domain}confirm-email/{token}"
             html = HTML_CONFIRM.format(confirm_url)
 
-            # if send_email_smtp(user.email, SUBJECT, html) == 200:  # call the send_email function
-
-            return {'message': 'User created successfully. Email confirmation sent'}, 201
+            if send_email_smtp(user.email, SUBJECT, html) == 200:  # call the send_email function
+                return {'message': 'User created successfully. Email confirmation sent'}, 201
+            else:
+                return {'message': 'User created successfully, but confirmation email could not be sent'}, 202
 
         except IntegrityError:
             db.session.rollback()  # session rollback
