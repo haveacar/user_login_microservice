@@ -12,3 +12,5 @@ HTML_CONFIRM = """\
                   </body>
                 </html>
                 """
+
+SUBJECT = 'Please Confirm your Email on WEB3m'
