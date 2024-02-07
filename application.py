@@ -2,9 +2,12 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
+
 from models import db
 from controls import secret_manager_keys
 from sqlalchemy import text
+from controllers import initialize_routes
+
 
 # set up flask server
 application = Flask(__name__)
@@ -23,7 +26,7 @@ db.init_app(application)
 
 
 def check_sql_connection():
-    """check MySQL database connection"""
+    """Func to check MySQL database connection"""
     try:
         with application.app_context():
             db.session.execute(text('SELECT 1'))
@@ -31,6 +34,9 @@ def check_sql_connection():
 
     except OperationalError as e:
         print(f"Database connection failed: {e}")
+
+# routes initialize
+initialize_routes(api)
 
 
 if __name__ == '__main__':
