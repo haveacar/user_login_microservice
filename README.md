@@ -59,29 +59,40 @@ files:
 
 To start the application, use the following command:
 
-```
-python application.py
-```
+   ```
+   python application.py
+   ```
 
 The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
 
-## API Endpoints
+### API Endpoints
+  ```
+- **Register**: `POST /api/v1/register`
+  Resends the email confirmation. Requires email in JSON format.
 
-The application provides the following API endpoints:
+- **Resend Confirmation**: `POST /api/v1/resend-confirmation`
+  Resends the email confirmation. Requires email in JSON format.
 
-- `POST /api/v1/register`: Register a new user.
 
-- `POST /api/v1/resend-confirmation`: Resend the email confirmation.
+- **Protected**: `GET /api/v1/protected`
+  Accesses a JWT-protected resource. Requires JWT token in Authorization header.
 
-- `GET /api/v1/protected`: Access a JWT-protected resource.
 
-- `POST /api/v1/signin`: Sign in a user and return JWT tokens.
+- **Sign In**: `POST /api/v1/signin`
+  Signs in a user and returns JWT tokens. Requires email and password in JSON format.
 
-- `POST /api/v1/refresh_token`: Refresh the JWT access token.
 
-- `PUT /api/v1/users/<string:user_id>`: Update user data.
+- **Refresh Token**: `POST /api/v1/refresh_token`
+  Refreshes the JWT access token. Requires refresh token in Authorization header.
 
-- `DELETE /api/v1/users/<string:user_id>`: Delete a user.
+
+- **Update User**: `PUT /api/v1/users/<string:user_id>`
+  Updates user information. Requires JWT token in Authorization header and user details in JSON format.
+
+
+- **Delete User**: `DELETE /api/v1/users/<string:user_id>`
+  Deletes a user. Requires JWT token in Authorization header.
+
 
 ### Security Considerations
 
