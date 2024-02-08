@@ -3,6 +3,9 @@ from flask_restful import Resource
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from sqlalchemy.exc import IntegrityError
 from marshmallow import ValidationError
+from werkzeug.security import check_password_hash
+from datetime import timedelta
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 
 from controls import send_email_smtp
 from serializers import UserRegistrationSchema
@@ -124,3 +127,42 @@ class ConfirmEmail(Resource):
         db.session.commit()
 
         return {'message': 'Email confirmed'}, 200
+
+
+class SignIn(Resource):
+    """Handle in function """
+
+    def post(self, access_exp=timedelta(hours=1), refresh_exp=timedelta(days=30)):
+        """
+        Authenticate a user and issue JWT access and refresh tokens.
+        :param access_exp: specifies the expiration time for the access token. Defaults to 1 hour.
+        :param refresh_exp: specifies the expiration time for the refresh token.  Defaults to 30 days.
+        :return:
+        """
+        # get data
+        email = request.json.get('email')
+        password = request.json.get('password')
+
+        # check user in database
+        user = Users.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.password, password) or not user.email_confirmed:
+            return {'message': 'Login unsuccessful.'}, 401
+
+        # Create a new token with the user id inside
+        access_token = create_access_token(identity=user.user_id, expires_delta=access_exp,
+                                           additional_claims={"email": user.email, "username": user.username,
+                                                              "id": user.user_id,
+                                                              })
+
+        # Create a refresh token
+        refresh_token = create_refresh_token(identity=user.user_id, expires_delta=refresh_exp)
+
+        return {
+                   'user_id': user.user_id,
+                   'email': user.email,
+                   'username': user.username,
+                   'access_token': access_token,
+                   'refresh_token': refresh_token,
+                   'is_email_confirmed': user.email_confirmed
+
+               }, 200
