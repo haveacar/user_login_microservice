@@ -3,6 +3,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
 
+from admin import init_admin
 from models import db
 from controls import secret_manager_keys
 from sqlalchemy import text
@@ -24,6 +25,8 @@ application.config['SQLALCHEMY_TRAjwtCK_MODIFICATIONS'] = False
 # initialize db
 db.init_app(application)
 
+# initialize admin page
+init_admin(application, db.session)
 
 def check_sql_connection():
     """Func to check MySQL database connection"""
