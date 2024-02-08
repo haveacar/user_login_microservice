@@ -2,12 +2,12 @@ import uuid
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash
-
+from werkzeug.security import check_password_hash
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class Users(db.Model):
     """User model representing a user """
     id = db.Column(db.Integer, primary_key=True)
     # generate unique_id
@@ -23,6 +23,13 @@ class User(db.Model):
         Create and set the hashed password.
         """
         self.password = generate_password_hash(password) # hash password
+
+
+    def check_password(self, password):
+        """
+        Verify if the provided password matches the hashed password.
+        """
+        return check_password_hash(self.password, password)
 
     def __init__(self, username, email, password):
         self.username = username

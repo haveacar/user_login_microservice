@@ -1,24 +1,49 @@
 from flask import Flask
 from flask_restful import Api
-from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from sqlalchemy.exc import OperationalError
+
+from admin import init_admin
 from models import db
+from controls import secret_manager_keys
+from sqlalchemy import text
+from controllers import initialize_routes
 
 # set up flask server
 application = Flask(__name__)
-CORS(application)
 api = Api(application)
 jwt = JWTManager(application)
 # set up keys from aws secret manager
-application.config['SECRET_KEY'] = 'my secret key from secret manager'
-application.config["JWT_SECRET_KEY"] = 'my jwt key from secret manager'
+application.config['SECRET_KEY'] = secret_manager_keys.get('secret_key')
+application.config["JWT_SECRET_KEY"] = secret_manager_keys.get('jwt_key')
 
 # Database configuration
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://your_user:your_password@your_host/your_database'
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.config['SQLALCHEMY_DATABASE_URI'] = secret_manager_keys.get('my_sql_connection')
+application.config['SQLALCHEMY_TRAjwtCK_MODIFICATIONS'] = False
 
 # initialize db
 db.init_app(application)
 
+# initialize admin page
+init_admin(application, db.session)
+
+def check_sql_connection():
+    """Func to check MySQL database connection"""
+    try:
+        with application.app_context():
+            db.session.execute(text('SELECT 1'))
+        print("Database connection successful.")
+
+    except OperationalError as e:
+        print(f"Database connection failed: {e}")
+
+# routes initialize
+initialize_routes(api)
+
+
 if __name__ == '__main__':
-    application.run(debug=True, port=5000)
+    # check sql connection
+    with application.app_context():
+        check_sql_connection()
+    # application run
+    application.run(debug=False, port=5000)
