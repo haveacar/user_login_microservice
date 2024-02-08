@@ -46,4 +46,4 @@ if __name__ == '__main__':
     with application.app_context():
         check_sql_connection()
     # application run
-    application.run(debug=True, port=5000)
+    application.run(debug=False, port=5000)

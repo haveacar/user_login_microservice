@@ -1,5 +1,4 @@
 import os
-
 from flask import request, current_app, make_response
 from flask_restful import Resource
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
