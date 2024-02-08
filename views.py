@@ -263,8 +263,5 @@ class UserResource(Resource):
 
 class ApiDocumentationResource(Resource):
     def get(self):
-        html_file_path = os.path.join(current_app.root_path, 'templates', 'api_documentation.html')
-        with open(html_file_path, 'r') as html_file:
-            html_content = html_file.read()
         return make_response(render_template('api_documentation.html'), 200, {'Content-Type': 'text/html'})
 
