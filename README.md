@@ -54,7 +54,7 @@ files:
     content: |
       WSGIApplicationGroup %{GLOBAL}
 
-
+```
 ### Running the Application
 
 To start the application, use the following command:
