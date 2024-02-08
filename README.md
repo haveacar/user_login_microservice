@@ -63,41 +63,25 @@ To start the application, use the following command:
 python application.py
 ```
 
-The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/ ` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
+The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
 
-### API Endpoints
+## API Endpoints
 
-- `POST /api/v1/register`: Register a new user
-  Example usage with Python requests:
-  ```python
-  url = "http://localhost:5000/api/v1/register"
-  payload = json.dumps({
-    "username": "daniel",
-    "password": "Stason2407",
-    "email": "haveacar.zhovnir@gmail.com"
-  })
-  headers = {'Content-Type': 'application/json'}
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  ```
+The application provides the following API endpoints:
 
-- `POST /api/v1/resend-confirmation`: Resend the email confirmation
-  Example usage provided.
+- `POST /api/v1/register`: Register a new user.
 
-- `GET /api/v1/protected`: Access a JWT-protected resource
-  Example usage provided.
+- `POST /api/v1/resend-confirmation`: Resend the email confirmation.
 
-- `POST /api/v1/signin`: Sign in a user and return JWT tokens
-  Example usage provided.
+- `GET /api/v1/protected`: Access a JWT-protected resource.
 
-- `POST /api/v1/refresh_token`: Refresh the JWT access token
-  Example usage provided.
+- `POST /api/v1/signin`: Sign in a user and return JWT tokens.
 
-- `PUT /api/v1/users/<string:user_id>`: Update user data
-  Example usage provided.
+- `POST /api/v1/refresh_token`: Refresh the JWT access token.
 
-- `DELETE /api/v1/users/<string:user_id>`: Delete a user
-  Example usage provided.
+- `PUT /api/v1/users/<string:user_id>`: Update user data.
+
+- `DELETE /api/v1/users/<string:user_id>`: Delete a user.
 
 ### Security Considerations
 
