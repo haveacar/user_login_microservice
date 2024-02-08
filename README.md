@@ -59,45 +59,40 @@ files:
 
 To start the application, use the following command:
 
-```
-python application.py
-```
+   ```
+   python application.py
+   ```
 
-The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/ ` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
+The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
 
 ### API Endpoints
-
-- `POST /api/v1/register`: Register a new user
-  Example usage with Python requests:
-  ```python
-  url = "http://localhost:5000/api/v1/register"
-  payload = json.dumps({
-    "username": "daniel",
-    "password": "Stason2407",
-    "email": "haveacar.zhovnir@gmail.com"
-  })
-  headers = {'Content-Type': 'application/json'}
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
   ```
+- **Register**: `POST /api/v1/register`
+  Resends the email confirmation. Requires email in JSON format.
 
-- `POST /api/v1/resend-confirmation`: Resend the email confirmation
-  Example usage provided.
+- **Resend Confirmation**: `POST /api/v1/resend-confirmation`
+  Resends the email confirmation. Requires email in JSON format.
 
-- `GET /api/v1/protected`: Access a JWT-protected resource
-  Example usage provided.
 
-- `POST /api/v1/signin`: Sign in a user and return JWT tokens
-  Example usage provided.
+- **Protected**: `GET /api/v1/protected`
+  Accesses a JWT-protected resource. Requires JWT token in Authorization header.
 
-- `POST /api/v1/refresh_token`: Refresh the JWT access token
-  Example usage provided.
 
-- `PUT /api/v1/users/<string:user_id>`: Update user data
-  Example usage provided.
+- **Sign In**: `POST /api/v1/signin`
+  Signs in a user and returns JWT tokens. Requires email and password in JSON format.
 
-- `DELETE /api/v1/users/<string:user_id>`: Delete a user
-  Example usage provided.
+
+- **Refresh Token**: `POST /api/v1/refresh_token`
+  Refreshes the JWT access token. Requires refresh token in Authorization header.
+
+
+- **Update User**: `PUT /api/v1/users/<string:user_id>`
+  Updates user information. Requires JWT token in Authorization header and user details in JSON format.
+
+
+- **Delete User**: `DELETE /api/v1/users/<string:user_id>`
+  Deletes a user. Requires JWT token in Authorization header.
+
 
 ### Security Considerations
 
