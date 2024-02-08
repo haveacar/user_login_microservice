@@ -166,3 +166,22 @@ class SignIn(Resource):
                    'is_email_confirmed': user.email_confirmed
 
                }, 200
+
+class ProtectedResource(Resource):
+    """Protected Resource JWT"""
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()  # This should return the user_id
+        user = Users.query.filter_by(user_id=user_id).first()
+
+        if not user:
+            return {"message": "User not found"}, 404
+
+        # Return multiple user details
+        return {
+                   'user_id': user.user_id,
+                   'username': user.username,
+                   'email': user.email,
+                   'is_email_confirmed': user.email_confirmed
+
+               }, 200

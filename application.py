@@ -9,7 +9,6 @@ from controls import secret_manager_keys
 from sqlalchemy import text
 from controllers import initialize_routes
 
-
 # set up flask server
 application = Flask(__name__)
 api = Api(application)
