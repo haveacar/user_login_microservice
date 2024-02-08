@@ -185,3 +185,27 @@ class ProtectedResource(Resource):
                    'is_email_confirmed': user.email_confirmed
 
                }, 200
+
+
+class TokenRefresh(Resource):
+    """Endpoint to refresh access tokens using a valid refresh token."""
+
+    @jwt_required(refresh=True)
+    def post(self, access_exp=timedelta(hours=1)):
+        current_user_id = get_jwt_identity()
+        user = Users.query.filter_by(user_id=current_user_id).first()
+        if not user:
+            return {"message": "User not found"}, 404
+
+        # Create a new token with the user details inside
+        new_token = create_access_token(
+            identity=user.user_id,
+            expires_delta=access_exp,
+            additional_claims={
+                "email": user.email,
+                "username": user.username,
+                "id": user.user_id,
+            }
+        )
+
+        return {'access_token': new_token}, 200
