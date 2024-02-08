@@ -1,4 +1,6 @@
-from flask import request, current_app
+import os
+
+from flask import request, current_app, make_response
 from flask_restful import Resource
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from sqlalchemy.exc import IntegrityError
@@ -258,3 +260,11 @@ class UserResource(Resource):
         except Exception as e:
             db.session.rollback()
             return {"message": f"An error occurred while deleting the user: {str(e)}"}, 500
+
+
+class ApiDocumentationResource(Resource):
+    def get(self):
+        html_file_path = os.path.join(current_app.root_path, 'templates', 'api_documentation.html')
+        with open(html_file_path, 'r') as html_file:
+            html_content = html_file.read()
+        return make_response(html_content, 200, {'Content-Type': 'text/html'})

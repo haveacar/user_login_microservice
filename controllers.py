@@ -1,6 +1,6 @@
 from flask_restful import Api
 from views import RegisterResource, ResendConfirmationResource, ConfirmEmail, SignIn, ProtectedResource,\
-    TokenRefresh, UserResource
+    TokenRefresh, UserResource, ApiDocumentationResource
 
 
 def initialize_routes(api: Api):
@@ -12,3 +12,6 @@ def initialize_routes(api: Api):
     api.add_resource(ProtectedResource, '/api/v1/protected')  # jwt protected resource (GET)
     api.add_resource(TokenRefresh, '/api/v1/refresh_token')  # refresh access token (POST)
     api.add_resource(UserResource, '/api/v1/users/<string:user_id>')  # update user data, delete user (PUT, DELETE)
+
+    """Index Page"""
+    api.add_resource(ApiDocumentationResource, '/') # test documentation

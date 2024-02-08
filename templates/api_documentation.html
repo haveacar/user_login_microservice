@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Endpoint Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .endpoint {
+            background-color: #e7f4e4;
+        }
+        .description {
+            background-color: #eef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Endpoint Documentation</h1>
+        <p>This document outlines the various endpoints available in our Flask application, along with their supported HTTP methods and functionalities.</p>
+
+        <table>
+            <tr>
+                <th>Endpoint</th>
+                <th>HTTP Method</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/register</td>
+                <td>POST</td>
+                <td class="description">Register a new user, generate a confirmation token, and send a confirmation URL via email.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/resend-confirmation</td>
+                <td>POST</td>
+                <td class="description">Resend the email confirmation for user registration.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/confirm-email/&lt;token&gt;</td>
+                <td>GET</td>
+                <td class="description">Confirm user email using the provided token.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/signin</td>
+                <td>POST</td>
+                <td class="description">Authenticate a user and return access and refresh tokens.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/protected</td>
+                <td>GET</td>
+                <td class="description">Access a JWT protected resource.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/refresh_token</td>
+                <td>POST</td>
+                <td class="description">Refresh the access token using a valid refresh token.</td>
+            </tr>
+            <tr>
+                <td class="endpoint">/api/v1/users/&lt;string:user_id&gt;</td>
+                <td>PUT, DELETE</td>
+                <td class="description">Update user data or delete a user.</td>
+            </tr>
+        </table>
+        <!-- Admin Link -->
+        <br><h4>For test endpoints:</h4>
+        <a href="/web3m-admin" class="admin-link">Admin Dashboard</a>
+    </div>
+</body>
+</html>
