@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install pytest
 
-# Copy the rest of the application's code
+
 COPY . .
 
 # Set PYTHONPATH to include the current directory
@@ -36,5 +36,5 @@ EXPOSE 5000
 ENV FLASK_APP=application.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Run application.py when the container launches
+# Run application.py
 CMD ["flask", "run"]
