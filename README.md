@@ -92,7 +92,7 @@ The application will start on `http://web3m-login-microservice.eu-central-1.elas
 
 - **Delete User**: `DELETE /api/v1/users/<string:user_id>`
   Deletes a user. Requires JWT token in Authorization header.
-
+  ```
 
 ### Security Considerations
 
