@@ -6,7 +6,7 @@ from application import application, check_sql_connection
 def client():
     application.config['TESTING'] = True  # Configure Flask for testing
     with application.test_client() as client:
-        with application.app_context():  # This creates an application context
+        with application.app_context():
             yield client
 
 def test_home_route(client):
