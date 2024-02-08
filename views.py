@@ -1,5 +1,5 @@
 import os
-from flask import request, current_app, make_response
+from flask import request, current_app, make_response, render_template
 from flask_restful import Resource
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from sqlalchemy.exc import IntegrityError
@@ -266,4 +266,5 @@ class ApiDocumentationResource(Resource):
         html_file_path = os.path.join(current_app.root_path, 'templates', 'api_documentation.html')
         with open(html_file_path, 'r') as html_file:
             html_content = html_file.read()
-        return make_response(html_content, 200, {'Content-Type': 'text/html'})
+        return make_response(render_template('api_documentation.html'), 200, {'Content-Type': 'text/html'})
+
