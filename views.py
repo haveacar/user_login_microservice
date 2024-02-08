@@ -220,7 +220,6 @@ class UserResource(Resource):
     """
 
     @jwt_required()
-    @jwt_required()
     def put(self):
         # Get the identity of the current user from the JWT token
         current_user_id = get_jwt_identity()
@@ -273,4 +272,3 @@ class UserResource(Resource):
 class ApiDocumentationResource(Resource):
     def get(self):
         return make_response(render_template('api_documentation.html'), 200, {'Content-Type': 'text/html'})
-
