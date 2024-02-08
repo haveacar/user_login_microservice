@@ -11,6 +11,7 @@ This Microservice for user registration is designed to provide a backend service
 - Admin interface for managing users
 - Email sending functionality through AWS SES
 - Configuration management through AWS Secrets Manager
+- Integration tests to cover critical authentication flows
 
 ### Technical Documentation
 [http://web3mtest-env.eba-hwukpuqp.eu-central-1.elasticbeanstalk.com/](http://web3mtest-env.eba-hwukpuqp.eu-central-1.elasticbeanstalk.com/)
@@ -54,7 +55,7 @@ files:
     content: |
       WSGIApplicationGroup %{GLOBAL}
 
-
+```
 ### Running the Application
 
 To start the application, use the following command:
@@ -63,7 +64,7 @@ To start the application, use the following command:
    python application.py
    ```
 
-The application will start on `http://web3m-login-microservice.eu-central-1.elasticbeanstalk.com/` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
+The application will start on `http://web3mtest-env.eba-hwukpuqp.eu-central-1.elasticbeanstalk.com/` by default. You can access the admin interface at `/web3m-admin` with the configured credentials.
 
 ### API Endpoints
   ```
@@ -92,7 +93,7 @@ The application will start on `http://web3m-login-microservice.eu-central-1.elas
 
 - **Delete User**: `DELETE /api/v1/users/<string:user_id>`
   Deletes a user. Requires JWT token in Authorization header.
-
+  ```
 
 ### Security Considerations
 
@@ -105,3 +106,11 @@ The application will start on `http://web3m-login-microservice.eu-central-1.elas
 If you encounter issues with database connectivity or AWS services, ensure your configuration in `settings.json` is correct and that your AWS credentials have the necessary permissions.
 
 For more detailed error information, consult the application logs and AWS service dashboards.
+
+### Dockerfile Enhancements
+
+Your Dockerfile is structured efficiently with a multi-stage build to separate the build and runtime environments. However, the Dockerfile is correctly formatted and doesn't necessarily require changes for functionality. Ensure all necessary files are included in your repository and that the `requirements.txt` file correctly lists all dependencies.
+
+### Conclusion
+
+This README provides a solid foundation for understanding, setting up, and utilizing the microservice. Ensure to keep both the documentation and Dockerfile updated as the project evolves.
