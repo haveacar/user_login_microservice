@@ -87,11 +87,11 @@ The application will start on `http://web3mtest-env.eba-hwukpuqp.eu-central-1.el
   Refreshes the JWT access token. Requires refresh token in Authorization header.
 
 
-- **Update User**: `PUT /api/v1/users/<string:user_id>`
+- **Update User**: `PUT /api/v1/users`
   Updates user information. Requires JWT token in Authorization header and user details in JSON format.
 
 
-- **Delete User**: `DELETE /api/v1/users/<string:user_id>`
+- **Delete User**: `DELETE /api/v1/users`
   Deletes a user. Requires JWT token in Authorization header.
   ```
 
