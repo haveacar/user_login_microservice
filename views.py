@@ -220,9 +220,12 @@ class UserResource(Resource):
     """
 
     @jwt_required()
-    def put(self, user_id):
+    def put(self):
+        # Get the identity of the current user from the JWT token
+        current_user_id = get_jwt_identity()
 
-        user = Users.query.filter_by(user_id=user_id).first()
+        # Find the user by JWT token's identity (user_id)
+        user = Users.query.filter_by(user_id=current_user_id).first()
         if not user:
             return {"message": "User not found"}, 404
 
@@ -248,10 +251,15 @@ class UserResource(Resource):
             return {"message": f"An error occurred: {str(err)}"}, 500
 
     @jwt_required()  # Ensures that the request is authenticated
-    def delete(self, user_id):
-        user = Users.query.filter_by(user_id=user_id).first()
+    def delete(self):
+        # Get the identity of the current user from the JWT token
+        current_user_id = get_jwt_identity()
+
+        # Find the user by JWT token's identity (user_id)
+        user = Users.query.filter_by(user_id=current_user_id).first()
         if not user:
             return {"message": "User not found"}, 404
+
         try:
             db.session.delete(user)
             db.session.commit()
@@ -263,8 +271,4 @@ class UserResource(Resource):
 
 class ApiDocumentationResource(Resource):
     def get(self):
-        html_file_path = os.path.join(current_app.root_path, 'templates', 'api_documentation.html')
-        with open(html_file_path, 'r') as html_file:
-            html_content = html_file.read()
         return make_response(render_template('api_documentation.html'), 200, {'Content-Type': 'text/html'})
-

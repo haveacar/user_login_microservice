@@ -11,7 +11,7 @@ def initialize_routes(api: Api):
     api.add_resource(SignIn, '/api/v1/signin')  # sign in  return access and refresh token (POST)
     api.add_resource(ProtectedResource, '/api/v1/protected')  # jwt protected resource (GET)
     api.add_resource(TokenRefresh, '/api/v1/refresh_token')  # refresh access token (POST)
-    api.add_resource(UserResource, '/api/v1/users/<string:user_id>')  # update user data, delete user (PUT, DELETE)
+    api.add_resource(UserResource, '/api/v1/users/')  # update user data, delete user (PUT, DELETE)
 
     """Index Page"""
     api.add_resource(ApiDocumentationResource, '/') # test documentation
