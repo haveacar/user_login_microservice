@@ -167,9 +167,11 @@ class SignIn(Resource):
 
                }, 200
 
+
 class ProtectedResource(Resource):
     """Protected Resource JWT"""
-    @jwt_required()
+
+    @jwt_required()  # Ensures that the request is authenticated
     def get(self):
         user_id = get_jwt_identity()  # This should return the user_id
         user = Users.query.filter_by(user_id=user_id).first()
@@ -188,9 +190,9 @@ class ProtectedResource(Resource):
 
 
 class TokenRefresh(Resource):
-    """Endpoint to refresh access tokens using a valid refresh token."""
+    """Handle refresh access tokens using a valid refresh token."""
 
-    @jwt_required(refresh=True)
+    @jwt_required(refresh=True)  # Ensures that the request is authenticated
     def post(self, access_exp=timedelta(hours=1)):
         current_user_id = get_jwt_identity()
         user = Users.query.filter_by(user_id=current_user_id).first()
@@ -209,3 +211,50 @@ class TokenRefresh(Resource):
         )
 
         return {'access_token': new_token}, 200
+
+
+class UserResource(Resource):
+    """
+    Resource for updating user information.
+    """
+
+    @jwt_required()
+    def put(self, user_id):
+
+        user = Users.query.filter_by(user_id=user_id).first()
+        if not user:
+            return {"message": "User not found"}, 404
+
+        schema = UserRegistrationSchema(partial=True)  # Allow partial updates
+        try:
+            # Deserialize and validate the request data
+            data = schema.load(request.json)
+
+            # Update user fields based on validated data
+            if 'username' in data:
+                user.username = data['username']
+            if 'email' in data:
+                user.email = data['email']
+            if 'password' in data:
+                user.password = data['password']
+
+            db.session.commit()
+            return {"message": "User updated successfully"}, 200
+        except ValidationError as err:
+            return {"message": err.messages}, 400
+        except Exception as err:
+            db.session.rollback()
+            return {"message": f"An error occurred: {str(err)}"}, 500
+
+    @jwt_required()  # Ensures that the request is authenticated
+    def delete(self, user_id):
+        user = Users.query.filter_by(user_id=user_id).first()
+        if not user:
+            return {"message": "User not found"}, 404
+        try:
+            db.session.delete(user)
+            db.session.commit()
+            return {"message": "User deleted successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"message": f"An error occurred while deleting the user: {str(e)}"}, 500

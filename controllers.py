@@ -1,5 +1,6 @@
 from flask_restful import Api
-from views import RegisterResource, ResendConfirmationResource, ConfirmEmail, SignIn, ProtectedResource, TokenRefresh
+from views import RegisterResource, ResendConfirmationResource, ConfirmEmail, SignIn, ProtectedResource,\
+    TokenRefresh, UserResource
 
 
 def initialize_routes(api: Api):
@@ -9,4 +10,5 @@ def initialize_routes(api: Api):
     api.add_resource(ConfirmEmail, '/confirm-email/<token>', endpoint='confirm_email') # email confirmation (GET)
     api.add_resource(SignIn, '/api/v1/signin')  # sign in  return access and refresh token (POST)
     api.add_resource(ProtectedResource, '/api/v1/protected')  # jwt protected resource (GET)
-    api.add_resource(TokenRefresh, '/api/v1/refresh_token')  # refresh access token  (POST)
+    api.add_resource(TokenRefresh, '/api/v1/refresh_token')  # refresh access token (POST)
+    api.add_resource(UserResource, '/api/v1/users/<string:user_id>')  # update user data, delete user (PUT, DELETE)
