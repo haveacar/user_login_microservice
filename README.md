@@ -109,8 +109,17 @@ For more detailed error information, consult the application logs and AWS servic
 
 ### Dockerfile Enhancements
 
-Your Dockerfile is structured efficiently with a multi-stage build to separate the build and runtime environments. However, the Dockerfile is correctly formatted and doesn't necessarily require changes for functionality. Ensure all necessary files are included in your repository and that the `requirements.txt` file correctly lists all dependencies.
+Dockerfile is structured efficiently with a multi-stage build to separate the build and runtime environments. However, the Dockerfile is correctly formatted and doesn't necessarily require changes for functionality. Ensure all necessary files are included in your repository and that the `requirements.txt` file correctly lists all dependencies.
 
+## Build the Docker Image
+First, you need to build the Docker image for your application. Ensure you are in the project root directory and run the following command:
+   ```
+   docker build -t user-registration-microservice .
+   ```
+## Run the Docker Container
+   ```
+   docker run -p 5000:5000 user-registration-microservice
+   ```
 ### Conclusion
 
 This README provides a solid foundation for understanding, setting up, and utilizing the microservice. Ensure to keep both the documentation and Dockerfile updated as the project evolves.
