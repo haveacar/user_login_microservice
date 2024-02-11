@@ -19,7 +19,7 @@ application.config["JWT_SECRET_KEY"] = secret_manager_keys.get('jwt_key')
 
 # Database configuration
 application.config['SQLALCHEMY_DATABASE_URI'] = secret_manager_keys.get('my_sql_connection')
-application.config['SQLALCHEMY_TRAjwtCK_MODIFICATIONS'] = False
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # initialize db
 db.init_app(application)
